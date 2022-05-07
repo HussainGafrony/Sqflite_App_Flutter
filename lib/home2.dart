@@ -15,7 +15,7 @@ class _HomeScreen2State extends State<HomeScreen2> {
   bool isloading = true;
   List notes = [];
   Future readData() async {
-    List<Map> response = await sqlDb.readData("SELECT * FROM notes");
+    List<Map> response = await sqlDb.read("notes");
     notes.addAll(response);
     isloading = false;
     if (this.mounted) {
@@ -68,8 +68,10 @@ class _HomeScreen2State extends State<HomeScreen2> {
                                     color: Colors.red,
                                   ),
                                   onPressed: () async {
-                                    int response = await sqlDb.deleteData(
-                                        "DELETE FROM notes WHERE id = ${notes[index]['id']} ");
+                                    // int response = await sqlDb.deleteData(
+                                    //     "DELETE FROM notes WHERE id = ${notes[index]['id']} ");
+                                    int response = await sqlDb.delete(
+                                        "notes", "id = ${notes[index]['id']}");
                                     if (response > 0) {
                                       notes.removeWhere((element) =>
                                           element['id'] == notes[index]['id']);
@@ -90,7 +92,8 @@ class _HomeScreen2State extends State<HomeScreen2> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => EditNote(
-                                                  id: notes[index]['id'].toString(),
+                                                  id: notes[index]['id']
+                                                      .toString(),
                                                   note: notes[index]['note'],
                                                   title: notes[index]['title'],
                                                   color: notes[index]['color'],

@@ -58,13 +58,21 @@ class _EditNoteState extends State<EditNote> {
                 child: Text('Update'),
                 color: Colors.red,
                 onPressed: () async {
-                  int response = await sqlDb.updateData('''
-                    UPDATE notes SET
-                    note = "${note.text}",
-                    title = "${title.text}",
-                    color = "${color.text}",
-                    id    = "${widget.id}" 
-''');
+//                   int response = await sqlDb.updateData('''
+//                     UPDATE notes SET
+//                     note = "${note.text}",
+//                     title = "${title.text}",
+//                     color = "${color.text}",
+//                     id    = "${widget.id}"
+// ''');
+                  int response = await sqlDb.update(
+                      "notes",
+                      {
+                        "note": note.text,
+                        "title": title.text,
+                        "color": color.text,
+                      },
+                      "id = ${widget.id}");
                   if (response > 0) {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => HomeScreen2()));

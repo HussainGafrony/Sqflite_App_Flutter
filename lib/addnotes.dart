@@ -8,7 +8,7 @@ class AddNote extends StatefulWidget {
 }
 
 class _AddNoteState extends State<AddNote> {
-  TextEditingController? note = TextEditingController();
+  TextEditingController note = TextEditingController();
   TextEditingController title = TextEditingController();
   TextEditingController color = TextEditingController();
   SqlDb sqlDb = SqlDb();
@@ -42,9 +42,14 @@ class _AddNoteState extends State<AddNote> {
                 child: Text('ADD'),
                 color: Colors.red,
                 onPressed: () async {
-                  int response = await sqlDb.insertData('''
-                  INSERT INTO notes (title , note , color) VALUES ("${title.text}" , "${note!.text}" , "${color.text}")
-              ''');
+                  //     int response = await sqlDb.insertData('''
+                  //     INSERT INTO notes (title , note , color) VALUES ("${title.text}" , "${note!.text}" , "${color.text}")
+                  // ''');
+                  int response = await sqlDb.insert("notes", {
+                    "note": note.text,
+                    "title": title.text,
+                    "color": color.text,
+                  });
                   if (response > 0) {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => HomeScreen2()));
